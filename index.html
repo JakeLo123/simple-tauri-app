@@ -10,20 +10,15 @@
 
   <body>
     <main class="container">
-      <h1>Welcome to Tauri</h1>
+      <h1>The Game of Life</h1>
 
-      <div>
-        <button id="dec-btn">
-          Decrement
-        </button>
-        <button id="inc-btn">
-          Increment
-        </button>
+      <!-- GAME DISPLAY -->
+      <canvas id="canvas"></canvas>
+      <div class="game-controls">
+        <button id="play-btn" type="button">Begin</button>
+        <button id="tick-btn" type="button">Tick</button>
+        <button id="reset-btn" type="button">Reset</button>
       </div>
-      <p>
-        Count: 
-        <span id="count-display">0</span>
-      </p>
     </main>
   </body>
 </html>

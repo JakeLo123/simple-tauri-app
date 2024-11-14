@@ -1,28 +1,26 @@
 import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 
-let incBtn: HTMLButtonElement | null;
-let decBtn: HTMLButtonElement | null;
-let countEl: HTMLElement | null;
+import { draw } from "./gameFunctions";
+import type { Board } from "./gameTypes";
+import { initUserControls } from "./userControls";
 
-type Tick = {
-	count: number;
-};
+let canvas: HTMLCanvasElement | null;
+
+type Tick = Board;
 
 listen<Tick>("tick", (event) => {
-	if (!countEl) return;
-	countEl.textContent = String(event.payload.count);
+	draw(event.payload);
 });
 
-window.addEventListener("DOMContentLoaded", () => {
-	countEl = document.querySelector("#inc-btn");
-	incBtn = document.querySelector("#inc-btn");
-	decBtn = document.querySelector("#dec-btn");
+window.addEventListener("DOMContentLoaded", async () => {
+	canvas = document.querySelector("#canvas");
+	const ctx = canvas?.getContext("2d");
 
-	incBtn?.addEventListener("click", async () => {
-		await invoke("inc_count");
-	});
-	decBtn?.addEventListener("click", async () => {
-		await invoke("dec_count");
-	});
+	if (!canvas || !ctx) return;
+
+	const board: Board = await invoke("get_board");
+	draw(board);
+
+	initUserControls();
 });
